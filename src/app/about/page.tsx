@@ -1,3 +1,3 @@
-import { ContentPage } from "@/components/content-page";
+import { AboutExperience } from "@/components/about-experience";
 export const metadata={title:"About Malex"};
-export default function Page(){return <ContentPage eyebrow="About Malex" title="A school built around possibility." intro="We know children do their best learning when they feel safe, known, and inspired to stretch beyond what they thought possible." image="/images/community.jpg" imageAlt="A young learner in a classroom" statement="Education should steady the heart, open the mind, and give every child the courage to begin." sections={[{number:"01",title:"Our purpose",body:"To build capable, compassionate, and curious young people who can contribute meaningfully wherever life takes them."},{number:"02",title:"Our approach",body:"We pair academic rigour with attentive teaching, creativity, collaboration, and the values that make achievement matter."},{number:"03",title:"Our community",body:"Families, teachers, and learners share responsibility for a culture of respect, belonging, and high expectations."}]} bandImage="/images/primary.jpg"/>}
+export default function Page(){return <AboutExperience/>}

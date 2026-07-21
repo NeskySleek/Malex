@@ -1,3 +1,0 @@
-import Link from "next/link";import { SiteHeader } from "@/components/site-shell";
-export const metadata={title:"Portal Login"};
-export default function Page(){return <><SiteHeader/><main className="portal-page"><div><p className="kicker">Secure school portal</p><h1>Welcome<br/><em>back.</em></h1><p>For parents, students, teachers, finance staff, and school administrators.</p></div><form><label>Email address<input type="email" placeholder="you@example.com"/></label><label>Password<input type="password" placeholder="••••••••"/></label><button type="button" disabled>Sign-in setup pending</button><Link href="/contact">Need help accessing your account?</Link></form></main></>}

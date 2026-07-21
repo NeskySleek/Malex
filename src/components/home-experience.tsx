@@ -4,11 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { animate, motion, useInView, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { FloatingNav } from "./floating-nav";
 
 const programmes = [
-  { number: "01", stage: "Crèche & Nursery", title: "Where wonder begins", image: "/images/home/early-years.jpg", href: "/programmes#early-years" },
-  { number: "02", stage: "Primary School", title: "Building strong foundations", image: "/images/home/primary.jpg", href: "/programmes#primary" },
-  { number: "03", stage: "Secondary School", title: "Finding purpose and voice", image: "/images/home/secondary.jpg", href: "/programmes#secondary" },
+  { number: "01", stage: "Crèche & Nursery", title: "Where wonder begins", image: "/images/home/early-years.jpg", href: "/admissions#learning-stages" },
+  { number: "02", stage: "Primary School", title: "Building strong foundations", image: "/images/home/primary.jpg", href: "/admissions#learning-stages" },
+  { number: "03", stage: "Secondary School", title: "Finding purpose and voice", image: "/images/home/secondary.jpg", href: "/admissions#learning-stages" },
 ];
 
 const metrics = [
@@ -80,15 +81,7 @@ export function HomeExperience() {
     <section ref={heroRef} className="figma-hero" onPointerMove={moveHeroCursor} onPointerLeave={() => setShowHeroCursor(false)}>
       <motion.div className="figma-hero-media" style={{ y: heroImageY }}><Image src="/images/home/hero.jpg" alt="Malex learners and teachers standing together on campus" fill priority sizes="100vw" /></motion.div>
       <div className="figma-hero-overlay" />
-      <motion.header className="figma-nav" style={{ backgroundColor: navBackground }} initial={reduceMotion ? false : { opacity: 0, y: -24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7, ease: [0.16, 1, 0.3, 1] }}>
-        <nav aria-label="Main navigation"><Link href="/about">About</Link><Link href="/admissions">Admissions</Link><Link href="/school-life">School Life</Link></nav>
-        <details className="mobile-figma-menu">
-          <summary aria-label="Open navigation menu"><span/><span/><b className="visually-hidden">Menu</b></summary>
-          <div><Link href="/about">About</Link><Link href="/admissions">Admissions</Link><Link href="/school-life">School Life</Link><Link href="/contact">Contact Us</Link></div>
-        </details>
-        <Link className="figma-wordmark" href="/">Malex</Link>
-        <div className="figma-nav-end"><Link href="/contact">Contact Us</Link><Link className="nav-portal" href="/portal">Portal</Link></div>
-      </motion.header>
+      <FloatingNav backgroundColor={navBackground}/>
       <motion.div className="figma-hero-content" style={{ y: heroTextY, opacity: heroOpacity }} initial="hidden" animate="visible" transition={{ staggerChildren: .12, delayChildren: .18 }}>
         <motion.h1 variants={reveal} transition={{ duration: .85, ease: [0.16, 1, 0.3, 1] }}><span>We believe</span><span>every child</span><em>can flourish.</em></motion.h1>
         <motion.div variants={reveal} transition={{ duration: .7 }}><ArrowLink href="/about">Discover Malex</ArrowLink></motion.div>
@@ -100,7 +93,7 @@ export function HomeExperience() {
     <motion.section className="figma-intro" initial="hidden" whileInView="visible" viewport={{ once: false, amount: .3 }} transition={{ staggerChildren: .14 }}>
       <motion.p className="figma-kicker" variants={reveal}>A school for every stage</motion.p>
       <motion.h2 variants={reveal}>Curious minds are<br/>our best hope for<br/><em>the future.</em></motion.h2>
-      <motion.div variants={reveal} className="figma-intro-copy"><p>Malex is a joyful, ambitious learning community for children from crèche through secondary school. We combine strong academic foundations with creativity, character, and care.</p><ArrowLink href="/portal" filled>Portal</ArrowLink></motion.div>
+      <motion.div variants={reveal} className="figma-intro-copy"><p>Malex is a joyful, ambitious learning community for children from crèche through secondary school. We combine strong academic foundations with creativity, character, and care.</p><ArrowLink href="/enroll" filled>Enroll Now</ArrowLink></motion.div>
     </motion.section>
 
     <section className="figma-programmes">
@@ -118,6 +111,6 @@ export function HomeExperience() {
 
     <section className="figma-admissions"><motion.div initial="hidden" whileInView="visible" viewport={{ once: false, amount: .35 }} transition={{ staggerChildren: .12 }}><motion.p className="figma-kicker" variants={reveal}>Admissions</motion.p><motion.h2 variants={reveal}>There is a place for<br/>your story at Malex.</motion.h2><motion.div variants={reveal}><ArrowLink href="/admissions" filled>Begin your journey</ArrowLink></motion.div></motion.div><div className="photo-collage" aria-label="A collage of Malex school life">{collage.map(([src,className],index)=><motion.div className={className} key={src+index} initial={reduceMotion ? false : { opacity: 0, y: 120, rotate: index%2 ? 18 : -12 }} whileInView={{ opacity: 1, y: 0, rotate: index%2 ? 10 : -6 }} viewport={{ once: false, amount: .05 }} transition={{ type: "spring", stiffness: 90, damping: 17, delay: index*.08 }} whileHover={reduceMotion ? {} : { y: -36, rotate: 0, scale: 1.055, zIndex: 20 }} whileTap={reduceMotion ? {} : { scale: .98 }}><Image src={src} alt={`Malex school life ${index + 1}`} fill sizes="260px"/></motion.div>)}</div></section>
 
-    <motion.footer className="figma-footer" initial="hidden" whileInView="visible" viewport={{ once: false, amount: .15 }} transition={{ staggerChildren: .16 }}><motion.div className="figma-footer-top" variants={reveal}><p>A trusted place to learn,<br/><em>belong, and become.</em></p><ArrowLink href="/admissions" filled>Begin your journey</ArrowLink></motion.div><motion.div className="figma-footer-grid" variants={reveal}><div><strong>Malex International School</strong><p>Enugu, Nigeria<br/>+234 800 MALEX SCHOOL<br/>hello@malexschool.edu.ng</p></div><div><Link href="/about">About</Link><Link href="/programmes">Programmes</Link><Link href="/admissions">Admissions</Link></div><div><Link href="/school-life">School Life</Link><Link href="/news">News & Events</Link><Link href="/contact">Contact</Link></div><div><Link href="/portal">Parent & Student Portal</Link><Link href="/contact">Book a school visit</Link></div></motion.div><motion.div className="figma-footer-base" variants={reveal}><span>© {new Date().getFullYear()} Malex International School</span><span>Privacy · Safeguarding · Accessibility</span></motion.div></motion.footer>
+    <motion.footer className="figma-footer" initial="hidden" whileInView="visible" viewport={{ once: false, amount: .15 }} transition={{ staggerChildren: .16 }}><motion.div className="figma-footer-top" variants={reveal}><p>A trusted place to learn,<br/><em>belong, and become.</em></p><ArrowLink href="/enroll" filled>Begin your journey</ArrowLink></motion.div><motion.div className="figma-footer-grid" variants={reveal}><div><strong>Malex International School</strong><p>Enugu, Nigeria<br/>+234 800 MALEX SCHOOL<br/>hello@malexschool.edu.ng</p></div><div><Link href="/about">About</Link><Link href="/admissions">Admissions</Link></div><div><Link href="/school-life">School Life</Link><Link href="/contact">Contact</Link></div><div><Link href="/login">Log In</Link><Link href="/enroll">Enroll Now</Link><Link href="/contact">Book a school visit</Link></div></motion.div><motion.div className="figma-footer-base" variants={reveal}><span>© {new Date().getFullYear()} Malex International School</span><span>Privacy · Safeguarding · Accessibility</span></motion.div></motion.footer>
   </main>;
 }
