@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { FloatingNav } from "./floating-nav";
@@ -78,5 +79,6 @@ export function EnrollExperience() { return <main className="figma-home system-p
 
 export function LoginExperience() {
   const [message,setMessage]=useState("");
-  return <main className="figma-home system-page login-page"><PageNav/><section className="login-shell"><motion.div initial="hidden" animate="visible" transition={{staggerChildren:.12}}><motion.p variants={reveal} className="figma-kicker">Malex community</motion.p><motion.h1 variants={reveal}>Welcome<br/><em>back.</em></motion.h1><motion.p variants={reveal}>Access the secure space for enrolled families, learners, and staff.</motion.p></motion.div><motion.form initial={reveal.hidden} animate={reveal.visible} className="login-card" onSubmit={e=>{e.preventDefault();setMessage("Login services will connect here once school accounts are enabled.")}}><label>Email or school ID<input required autoComplete="username"/></label><label>Password<input required type="password" autoComplete="current-password"/></label><div><label className="remember"><input type="checkbox"/> Keep me signed in</label><button type="button">Forgot password?</button></div><button type="submit">Log In →</button><p aria-live="polite">{message}</p><Link href="/contact">Need help accessing your account?</Link></motion.form></section><SystemFooter/></main>;
+  const router = useRouter();
+  return <main className="figma-home system-page login-page"><PageNav/><section className="login-shell"><motion.div initial="hidden" animate="visible" transition={{staggerChildren:.12}}><motion.p variants={reveal} className="figma-kicker">Malex community</motion.p><motion.h1 variants={reveal}>Welcome<br/><em>back.</em></motion.h1><motion.p variants={reveal}>Access the secure space for enrolled families, learners, and staff.</motion.p></motion.div><motion.form initial={reveal.hidden} animate={reveal.visible} className="login-card" onSubmit={e=>{e.preventDefault();setMessage("Opening your portal…");router.push("/portal")}}><label>Email or school ID<input required autoComplete="username" defaultValue="parent@malexschool.edu.ng"/></label><label>Password<input required type="password" autoComplete="current-password" defaultValue="malex-demo"/></label><div><label className="remember"><input type="checkbox"/> Keep me signed in</label><button type="button">Forgot password?</button></div><button type="submit">Enter Portal →</button><p aria-live="polite">{message || "Demo access is pre-filled for this prototype."}</p><Link href="/contact">Need help accessing your account?</Link></motion.form></section><SystemFooter/></main>;
 }

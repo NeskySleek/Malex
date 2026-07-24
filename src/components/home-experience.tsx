@@ -84,7 +84,7 @@ export function HomeExperience() {
       <FloatingNav backgroundColor={navBackground}/>
       <motion.div className="figma-hero-content" style={{ y: heroTextY, opacity: heroOpacity }} initial="hidden" animate="visible" transition={{ staggerChildren: .12, delayChildren: .18 }}>
         <motion.h1 variants={reveal} transition={{ duration: .85, ease: [0.16, 1, 0.3, 1] }}><span>We believe</span><span>every child</span><em>can flourish.</em></motion.h1>
-        <motion.div variants={reveal} transition={{ duration: .7 }}><ArrowLink href="/about">Discover Malex</ArrowLink></motion.div>
+        <motion.div className="hero-actions" variants={reveal} transition={{ duration: .7 }}><ArrowLink href="/login">Portal</ArrowLink><ArrowLink href="/enroll" filled>Enroll Now</ArrowLink></motion.div>
       </motion.div>
       <motion.p className="hero-scroll-cue" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}>Scroll to explore <span>↓</span></motion.p>
       <motion.div className="hero-cursor" aria-hidden="true" style={{ x: smoothCursorX, y: smoothCursorY }} animate={{ opacity: showHeroCursor ? 1 : 0, scale: showHeroCursor ? 1 : .72 }} transition={{ opacity: { duration: .16 }, scale: { duration: .22, ease: [0.16, 1, 0.3, 1] } }}><span>Explore</span><b>↗</b></motion.div>
