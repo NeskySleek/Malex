@@ -12,7 +12,16 @@ const values = [
   { number: "03", title: "Our community", body: "Families, teachers, and learners share responsibility for a culture of respect, belonging, and high expectations." },
 ];
 
-const team = ["Proprietress", "Principal", "Headmistress", "Admin"];
+const team = [
+  { name: "Mrs Nkechi Ogbo", role: "Proprietress", image: "/images/about/leadership/nkechi-ogbo.jpeg", position: "center 24%" },
+  { name: "Mr. Ifeanyi Okeanonife", role: "Principal", image: "/images/about/leadership/ifeanyi-okeanonife.png", position: "center" },
+  { name: "Mrs Agbo Obiageli", role: "Headmistress", image: "/images/about/leadership/agbo-obiageli.png", position: "center" },
+  { name: "Mrs Favour Ugo", role: "Admin", image: "/images/about/leadership/favour-ugo.png", position: "center 30%" },
+  { name: "Mrs Okeke Faith", role: "Junior Secondary Coordinator", image: "/images/about/leadership/okeke-faith.png", position: "center 25%" },
+  { name: "Mrs Okafor Ebere", role: "KG Classes Coordinator", image: "/images/about/leadership/okafor-ebere.png", position: "center 24%" },
+  { name: "Mrs Madubuike Lebechi", role: "Grade Classes Coordinator", image: "/images/about/leadership/madubuike-lebechi.png", position: "center 34%" },
+  { name: "Mrs MBA Onyinyechi", role: "Assistant Bursar", image: "/images/about/leadership/mba-onyinyechi.png", position: "center 34%" },
+];
 const reveal = { hidden: { opacity: 0, y: 42 }, visible: { opacity: 1, y: 0 } };
 
 function ArrowLink({ href, children }: { href: string; children: React.ReactNode }) {
@@ -22,7 +31,7 @@ function ArrowLink({ href, children }: { href: string; children: React.ReactNode
 function AboutFooter() {
   return <motion.footer className="figma-footer" initial="hidden" whileInView="visible" viewport={{ once: false, amount: .15 }} transition={{ staggerChildren: .16 }}>
     <motion.div className="figma-footer-top" variants={reveal}><p>A trusted place to learn,<br/><em>belong, and become.</em></p><ArrowLink href="/admissions">Begin your journey</ArrowLink></motion.div>
-    <motion.div className="figma-footer-grid" variants={reveal}><div><strong>Malex International School</strong><p>Enugu, Nigeria<br/>+234 800 MALEX SCHOOL<br/>hello@malexschool.edu.ng</p></div><div><Link href="/about">About</Link><Link href="/admissions">Admissions</Link></div><div><Link href="/school-life">School Life</Link><Link href="/contact">Contact</Link></div><div><Link href="/login">Log In</Link><Link href="/enroll">Enroll Now</Link><Link href="/contact">Book a school visit</Link></div></motion.div>
+    <motion.div className="figma-footer-grid" variants={reveal}><div><strong>Malex International School</strong><p>2A Niger Close, Uwani, Enugu<br/>Principal: 0803 750 6913<br/>Admin: 0803 894 7795<br/>School: 0816759432<br/>contact@malexinternationalschool.com</p></div><div><Link href="/about">About</Link><Link href="/admissions">Admissions</Link></div><div><Link href="/school-life">School Life</Link><Link href="/news">News & Updates</Link><Link href="/contact">Contact</Link></div></motion.div>
     <motion.div className="figma-footer-base" variants={reveal}><span>© {new Date().getFullYear()} Malex International School</span><span>Privacy · Safeguarding · Accessibility</span></motion.div>
   </motion.footer>;
 }
@@ -62,8 +71,8 @@ export function AboutExperience() {
 
     <section className="about-team">
       <motion.div className="about-team-heading" initial="hidden" whileInView="visible" viewport={{ once: false, amount: .45 }} transition={{ staggerChildren: .12 }}><motion.p className="figma-kicker" variants={reveal}>Our team</motion.p><motion.h2 variants={reveal}>Meet the<br/>Management Team</motion.h2></motion.div>
-      <div className="about-team-grid">{team.map((role, index) => <motion.article key={role} initial={reduceMotion ? false : { opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: .22 }} transition={{ duration: .65, delay: index * .08, ease: [0.16, 1, 0.3, 1] }} whileHover={reduceMotion ? {} : { y: -12 }}>
-        <div className="about-team-photo"><Image src="/images/about/management.jpg" alt={`${role} at Malex International School`} fill sizes="(max-width: 700px) 100vw, 25vw"/></div><p>{role}</p><h3>Mrs Nkechi</h3>
+      <div className="about-team-grid">{team.map((member, index) => <motion.article key={member.name} initial={reduceMotion ? false : { opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: .22 }} transition={{ duration: .65, delay: index * .08, ease: [0.16, 1, 0.3, 1] }} whileHover={reduceMotion ? {} : { y: -12 }}>
+        <div className={`about-team-photo${member.image ? "" : " about-team-placeholder"}`}>{member.image ? <Image src={member.image} alt={`${member.name}, ${member.role} at Malex International School`} fill sizes="(max-width: 700px) 100vw, 25vw" style={{ objectPosition: member.position }}/> : <span aria-label="Portrait coming soon">FU</span>}</div><p>{member.role}</p><h3>{member.name}</h3>
       </motion.article>)}</div>
     </section>
     <AboutFooter />

@@ -3,16 +3,34 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { FloatingNav } from "./floating-nav";
 
 const reveal = { hidden: { opacity: 0, y: 44 }, visible: { opacity: 1, y: 0 } };
 const stages = [
   ["01", "Crèche", "Warm, responsive care and purposeful play for our youngest learners."],
-  ["02", "Nursery", "Language, confidence, friendship, and discovery through play-led learning."],
-  ["03", "Primary", "Strong literacy, numeracy, creativity, and habits of independent thought."],
+  ["02", "Kindergarten (KG)", "Language, confidence, friendship, and discovery through play-led learning."],
+  ["03", "Basic", "Strong literacy, numeracy, creativity, and habits of independent thought."],
   ["04", "Secondary", "Rigorous study, mentorship, leadership, and preparation for life beyond school."],
+];
+type CurriculumLevel = { stage: string; note: string; subjects: string[]; trades?: string[] };
+const foundationCurriculum: CurriculumLevel[] = [
+  {
+    stage: "Crèche",
+    note: "Gentle first steps in communication, number sense, healthy routines, and learning with others.",
+    subjects: ["Health Habits", "Handwriting", "Literacy", "Numeracy", "Pre-Science", "Social Habits"],
+  },
+  {
+    stage: "Kindergarten (KG)",
+    note: "Across the KG classes, guided and playful learning develops language, creativity, movement, confidence, and independence.",
+    subjects: ["Literacy (Letter Work)", "Literacy (Language Domain)", "Numeracy", "Basic Science and Technology", "Health Habits", "Social Habits", "Civic Education", "Physical and Health Education", "Personal Development", "Creativity", "Songs and Rhymes", "Handwriting"],
+  },
+  {
+    stage: "Basic",
+    note: "The Basic programme builds strong academic foundations while introducing technology, vocational learning, and French.",
+    subjects: ["English Studies", "Mathematics", "Basic Science and Technology", "Physical and Health Education", "Christian Religious Studies", "Islamic Studies", "Nigerian History", "Social and Citizenship Studies", "Cultural and Creative Arts (CCA)", "Basic Digital Literacy", "Pre-vocational Studies", "French"],
+  },
 ];
 const secondaryCurriculum = [
   {
@@ -52,7 +70,7 @@ function PageNav() {
 export function SystemFooter() {
   return <motion.footer className="figma-footer system-footer" initial="hidden" whileInView="visible" viewport={{ once: false, amount: .12 }} transition={{ staggerChildren: .14 }}>
     <motion.div className="figma-footer-top" variants={reveal}><p>A trusted place to learn,<br/><em>belong, and become.</em></p><Pill href="/enroll">Begin your journey</Pill></motion.div>
-    <motion.div className="figma-footer-grid" variants={reveal}><div><strong>Malex International School</strong><p>Enugu, Nigeria<br/>+234 800 MALEX SCHOOL<br/>hello@malexschool.edu.ng</p></div><div><Link href="/about">About</Link><Link href="/admissions">Admissions</Link></div><div><Link href="/school-life">School Life</Link><Link href="/contact">Contact Us</Link></div><div><Link href="/login">Log In</Link><Link href="/enroll">Enroll Now</Link><Link href="/contact">Book a school visit</Link></div></motion.div>
+    <motion.div className="figma-footer-grid" variants={reveal}><div><strong>Malex International School</strong><p>2A Niger Close, Uwani, Enugu<br/>Principal: 0803 750 6913<br/>Admin: 0803 894 7795<br/>School: 0816759432<br/>contact@malexinternationalschool.com</p></div><div><Link href="/about">About</Link><Link href="/admissions">Admissions</Link></div><div><Link href="/school-life">School Life</Link><Link href="/news">News & Updates</Link><Link href="/contact">Contact Us</Link></div></motion.div>
     <motion.div className="figma-footer-base" variants={reveal}><span>© {new Date().getFullYear()} Malex International School</span><span>Privacy · Safeguarding · Accessibility</span></motion.div>
   </motion.footer>;
 }
@@ -73,8 +91,13 @@ export function AdmissionsExperience() {
 export function SchoolLifeExperience() {
   const reduce = useReducedMotion();
   return <main className="figma-home system-page life-page"><PageNav/><EditorialHero eyebrow="School life" title="Find what moves you." accent="Then take it further." intro="Beyond the timetable, learners build confidence through practice, friendship, service, performance, and play."/>
-    <section className="curriculum-section"><motion.div className="curriculum-heading" initial="hidden" whileInView="visible" viewport={{ once:false, amount:.3 }} transition={{ staggerChildren:.12 }}><motion.p variants={reveal} className="figma-kicker">Secondary curriculum</motion.p><motion.h2 variants={reveal}>Subjects that build<br/><em>strong foundations.</em></motion.h2><motion.p variants={reveal}>Our secondary curriculum balances essential academic knowledge with practical learning and opportunities to discover individual strengths.</motion.p></motion.div><div className="curriculum-grid">{secondaryCurriculum.map((level, levelIndex)=><motion.article key={level.stage} initial={reduce?false:{opacity:0,y:48}} whileInView={{opacity:1,y:0}} viewport={{once:false,amount:.18}} transition={{duration:.7,delay:levelIndex*.1}}><div className="curriculum-card-heading"><span>0{levelIndex+1}</span><div><h3>{level.stage}</h3><p>{level.note}</p></div></div><ol>{level.subjects.map((subject, subjectIndex)=><li key={subject}><span>{String(subjectIndex+1).padStart(2,"0")}</span>{subject}</li>)}</ol><div className="trade-subjects"><p className="figma-kicker">Trade {level.trades.length === 1 ? "subject" : "subjects"}</p>{level.trades.map(trade=><strong key={trade}>{trade}</strong>)}</div></motion.article>)}</div></section>
+    <CurriculumSection eyebrow="Crèche, KG & Basic" title={<>Three stages.<br/><em>One growing journey.</em></>} intro="A clear progression from first discoveries to confident, independent study." levels={foundationCurriculum} reduceMotion={Boolean(reduce)}/>
+    <CurriculumSection eyebrow="Secondary curriculum" title={<>Subjects that build<br/><em>strong foundations.</em></>} intro="Our secondary curriculum balances essential academic knowledge with practical learning and opportunities to discover individual strengths." levels={secondaryCurriculum} reduceMotion={Boolean(reduce)} secondary/>
     <ActivitySection reduceMotion={Boolean(reduce)}/><SystemFooter/></main>;
+}
+
+function CurriculumSection({ eyebrow, title, intro, levels, reduceMotion, secondary = false }: { eyebrow: string; title: React.ReactNode; intro: string; levels: CurriculumLevel[]; reduceMotion: boolean; secondary?: boolean }) {
+  return <section className={`curriculum-section ${secondary ? "curriculum-section-secondary" : "curriculum-section-foundation"}`}><motion.div className="curriculum-heading" initial="hidden" whileInView="visible" viewport={{ once:false, amount:.3 }} transition={{ staggerChildren:.12 }}><motion.p variants={reveal} className="figma-kicker">{eyebrow}</motion.p><motion.h2 variants={reveal}>{title}</motion.h2><motion.p variants={reveal}>{intro}</motion.p></motion.div><div className={`curriculum-grid ${levels.length > 2 ? "curriculum-grid-many" : ""}`}>{levels.map((level, levelIndex)=><motion.article key={level.stage} initial={reduceMotion?false:{opacity:0,y:48}} whileInView={{opacity:1,y:0}} viewport={{once:false,amount:.16}} transition={{duration:.7,delay:(levelIndex%2)*.08}}><div className="curriculum-card-heading"><span>{String(levelIndex+1).padStart(2,"0")}</span><div><h3>{level.stage}</h3><p>{level.note}</p></div></div><ol>{level.subjects.map((subject, subjectIndex)=><li key={subject}><span>{String(subjectIndex+1).padStart(2,"0")}</span>{subject}</li>)}</ol>{level.trades&&level.trades.length>0&&<div className="trade-subjects"><p className="figma-kicker">Trade {level.trades.length === 1 ? "subject" : "subjects"}</p>{level.trades.map(trade=><strong key={trade}>{trade}</strong>)}</div>}</motion.article>)}</div></section>;
 }
 
 function ActivitySection({ reduceMotion }: { reduceMotion: boolean }) {
@@ -107,17 +130,20 @@ function ActivitySection({ reduceMotion }: { reduceMotion: boolean }) {
   </section>;
 }
 
-function ContactForm({ enrollment = false }: { enrollment?: boolean }) {
-  const [sent, setSent] = useState(false);
-  function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); setSent(true); }
-  return <form className="malex-form" onSubmit={submit}>{enrollment && <><label>Child’s full name<input required name="childName"/></label><label>Learning stage<select required name="stage" defaultValue=""><option value="" disabled>Select a stage</option><option>Crèche</option><option>Nursery</option><option>Primary</option><option>Secondary</option></select></label></>}<label>{enrollment ? "Parent or guardian" : "Your name"}<input required name="name" autoComplete="name"/></label><label>Email address<input required type="email" name="email" autoComplete="email"/></label><label>Phone number<input required type="tel" name="phone" autoComplete="tel"/></label><label className="form-wide">{enrollment ? "Tell us about your child" : "How can we help?"}<textarea required name="message" rows={5}/></label><button type="submit">{sent ? "Thank you — we’ll be in touch" : enrollment ? "Send enrolment enquiry →" : "Send enquiry →"}</button><p className="form-status" aria-live="polite">{sent ? "Your enquiry has been recorded in this preview." : "We usually respond within one school day."}</p></form>;
-}
-
 export function ContactExperience() {
-  return <main className="figma-home system-page contact-system"><PageNav/><EditorialHero eyebrow="Contact Malex" title="Start a conversation." accent="Come and see us." intro="Questions, school visits, admissions guidance—we are ready to help your family take the next step."/><section className="contact-panel"><div><p className="figma-kicker">Send an enquiry</p><h2>We’d love to<br/>hear from you.</h2></div><ContactForm/></section><section className="contact-means"><article><span>01</span><h3>Visit</h3><p>Malex International School<br/>Enugu, Nigeria<br/>Monday–Friday, 8am–4pm</p></article><article><span>02</span><h3>Call</h3><p>+234 800 MALEX SCHOOL<br/>Admissions and general enquiries</p></article><article><span>03</span><h3>Write</h3><p>hello@malexschool.edu.ng<br/>We reply within one school day.</p></article></section><section className="map-section"><div><p className="figma-kicker">Find us</p><h2>Right here<br/>in <em>Enugu.</em></h2></div><iframe title="Map showing Enugu, Nigeria" src="https://www.openstreetmap.org/export/embed.html?bbox=7.45%2C6.40%2C7.58%2C6.52&amp;layer=mapnik" loading="lazy"/></section><SystemFooter/></main>;
+  const mapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+  const mapUrl = mapsApiKey ? `https://www.google.com/maps/embed/v1/place?key=${mapsApiKey}&q=Malex+International+School%2C+2A+Niger+Close%2C+Uwani%2C+Enugu&zoom=17` : "https://www.google.com/maps?q=2A%20Niger%20Close%2C%20Uwani%2C%20Enugu&output=embed";
+  return <main className="figma-home system-page contact-system"><PageNav/><EditorialHero eyebrow="Contact Malex" title="Start a conversation." accent="Come and see us." intro="Questions, school visits, admissions guidance—we are ready to help your family take the next step."/><section className="contact-directory"><div className="contact-directory-heading"><p className="figma-kicker">Talk to us directly</p><h2>The right person,<br/><em>one call away.</em></h2><p>Call the school team directly or send us an email. Tap any contact detail to get started.</p></div><div className="contact-means"><article><span>01</span><h3>Principal</h3><a href="tel:+2348037506913">0803 750 6913</a><p>Leadership and school matters</p></article><article><span>02</span><h3>Admin</h3><a href="tel:+2348038947795">0803 894 7795</a><p>Administration and enquiries</p></article><article><span>03</span><h3>School line</h3><a href="tel:+234816759432">0816759432</a><p>General information</p></article><article><span>04</span><h3>Email</h3><a href="mailto:contact@malexinternationalschool.com">contact@malexinternationalschool.com</a><p>School email address</p></article></div></section><section className="map-section"><div className="map-copy"><p className="figma-kicker">Find us</p><h2>Right here<br/>in <em>Enugu.</em></h2><address>Malex International School<br/>2A Niger Close, Uwani<br/>Enugu, Nigeria</address><a href="https://www.google.com/maps/search/?api=1&amp;query=2A%20Niger%20Close%20Uwani%20Enugu" target="_blank" rel="noreferrer">Open in Google Maps ↗</a></div><iframe title="Google Map showing Malex International School at 2A Niger Close, Uwani, Enugu" src={mapUrl} loading="lazy" allowFullScreen referrerPolicy="no-referrer-when-downgrade"/></section><SystemFooter/></main>;
 }
 
-export function EnrollExperience() { return <main className="figma-home system-page form-page"><PageNav/><EditorialHero eyebrow="Enroll at Malex" title="A new chapter." accent="Let’s begin." intro="Share a few details and our admissions team will personally guide your family through the next steps."/><section className="enroll-form-section"><div><p className="figma-kicker">Enrolment enquiry</p><h2>Tell us about<br/>your learner.</h2><p>Submitting this form starts a conversation—it does not commit you to enrolment.</p></div><ContactForm enrollment/></section><SystemFooter/></main>; }
+export function EnrollExperience() {
+  const reduce = useReducedMotion();
+  const paths = [
+    { number: "01", stage: "Crèche, Kindergarten (KG) & Basic", title: "Purchase an application form", detail: "Visit Malex International School to purchase an application form for ₦5,000. The form fee is non-refundable.", note: "No online application is required." },
+    { number: "02", stage: "Secondary", title: "Purchase a form and apply", detail: "Visit Malex International School to purchase the ₦5,000 non-refundable application form. Submit the completed form at the school and the applicant will receive a date for the entrance examination.", note: "The examination date is issued in person after the form is submitted." },
+  ];
+  return <main className="figma-home system-page form-page"><PageNav/><EditorialHero eyebrow="Enroll at Malex" title="Begin in person." accent="We’ll guide you." intro="Enrollment is currently handled physically at the school, where our admissions team can guide every family clearly."/><section className="enroll-form-section enroll-physical"><div><p className="figma-kicker">How to enrol</p><h2>Choose your<br/>learning stage.</h2><p>Visit us at 2A Niger Close, Uwani, Enugu. Please call ahead if you need help preparing for your visit.</p><Pill href="/contact">Contact the school</Pill></div><div className="enroll-paths">{paths.map((path,index)=><motion.article key={path.number} initial={reduce?false:{opacity:0,y:44}} whileInView={{opacity:1,y:0}} viewport={{once:false,amount:.35}} transition={{duration:.65,delay:index*.1}}><span>{path.number}</span><p>{path.stage}</p><h3>{path.title}</h3><div><p>{path.detail}</p><small>{path.note}</small></div></motion.article>)}</div></section><SystemFooter/></main>;
+}
 
 export function LoginExperience() {
   const [message,setMessage]=useState("");
