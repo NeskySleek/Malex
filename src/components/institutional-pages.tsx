@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { FormEvent, useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { FloatingNav } from "./floating-nav";
 
 const reveal = { hidden: { opacity: 0, y: 44 }, visible: { opacity: 1, y: 0 } };
@@ -14,17 +14,29 @@ const stages = [
   ["03", "Primary", "Strong literacy, numeracy, creativity, and habits of independent thought."],
   ["04", "Secondary", "Rigorous study, mentorship, leadership, and preparation for life beyond school."],
 ];
-const pursuits = [
-  ["Skills", "Public speaking", "Creative writing", "Digital literacy", "Leadership"],
-  ["Trades", "Culinary arts", "Fashion & textiles", "Woodwork", "Photography"],
-  ["Clubs", "Robotics", "Drama", "Chess", "Music & choir"],
+const secondaryCurriculum = [
+  {
+    stage: "Junior Secondary",
+    note: "A broad foundation across languages, sciences, technology, enterprise, culture, and citizenship.",
+    subjects: ["English Studies", "Mathematics", "Physical and Health Education", "Christian Religious Studies", "Nigerian History", "Cultural and Creative Arts (CCA)", "French", "Intermediate Science", "Digital Technology", "Business Studies", "Social and Citizenship Studies", "Igbo"],
+    trades: ["Livestock Farming"],
+  },
+  {
+    stage: "Senior Secondary",
+    note: "A purposeful range of core, science, humanities, business, and vocational subjects for life beyond school.",
+    subjects: ["English Language", "General Mathematics", "Digital Technologies", "Biology", "Chemistry", "Physics", "Agriculture", "Foods and Nutrition", "Nigerian History", "Government", "Christian Religious Studies", "Literature in English", "Commerce", "Accounting", "Marketing", "Economics", "Igbo"],
+    trades: ["Livestock Farming", "Beauty and Cosmetology"],
+  },
 ];
+const activityPath = (folder: string, stamp: string, number: number) => `/images/Activities/${folder}/ChatGPT Image Aug 22, 2026, ${stamp} PM (${number}).png`;
+const activitySeries = (folder: string, stamps: string[]) => stamps.map((stamp, index) => activityPath(folder, stamp, index + 1));
 const activities = [
-  ["Inter-house sports", "Competition becomes a lesson in teamwork, resilience, and school spirit.", "/images/home/primary.jpg"],
-  ["Excursions", "The classroom expands into museums, nature, workplaces, and the wider city.", "/images/community.jpg"],
-  ["Cultural days", "Learners celebrate language, dress, food, music, and the stories that shape us.", "/images/home/collage-5.jpg"],
-  ["Graduation ceremonies", "Milestones are honoured with families, teachers, and the whole community.", "/images/home/collage-4.jpg"],
-  ["Holiday celebrations", "Shared traditions create joyful memories and a deep sense of belonging.", "/images/home/collage-1.jpg"],
+  { title: "Inter-house Sports", description: "Competition becomes a lesson in teamwork, resilience, and school spirit.", images: activitySeries("Interhouse Sports", ["07_14_03","07_14_03","07_14_04","07_14_04","07_14_04","07_14_05","07_14_05"]) },
+  { title: "Excursion to Nike Lake", description: "Learners take curiosity beyond the classroom through discovery, nature, and shared adventure.", images: activitySeries("Escortion to Nike Lake", ["07_16_34","07_16_34","07_16_35","07_16_35","07_16_35","07_16_35","07_16_36","07_16_36","07_16_37","07_16_37"]) },
+  { title: "Excursion to Oakland", description: "New places turn learning into an experience filled with questions, confidence, and joy.", images: activitySeries("Escortion to Oakland", ["07_18_37","07_18_38","07_18_38","07_18_38"]) },
+  { title: "Cultural Day", description: "Learners celebrate language, dress, food, music, and the stories that shape our community.", images: activitySeries("Cultural day pictures", ["06_59_23","06_59_23","06_59_23","06_59_23"]) },
+  { title: "Graduation Ceremony", description: "Milestones are honoured with families, teachers, and the whole Malex community.", images: activitySeries("Graduation Pictures", ["06_52_12","06_52_12","06_52_12","06_52_13","06_52_13"]) },
+  { title: "Interschool Debate", description: "Young voices develop clarity, courage, and respect through thoughtful competition.", images: activitySeries("Interschool Debate", ["07_29_48","07_29_49","07_29_49"]) },
 ];
 
 function Pill({ href, children, light = false }: { href: string; children: React.ReactNode; light?: boolean }) {
@@ -61,8 +73,38 @@ export function AdmissionsExperience() {
 export function SchoolLifeExperience() {
   const reduce = useReducedMotion();
   return <main className="figma-home system-page life-page"><PageNav/><EditorialHero eyebrow="School life" title="Find what moves you." accent="Then take it further." intro="Beyond the timetable, learners build confidence through practice, friendship, service, performance, and play."/>
-    <section id="skills" className="pursuit-section"><motion.div initial="hidden" whileInView="visible" viewport={{ once:false, amount:.35 }} transition={{ staggerChildren:.12 }}><motion.p variants={reveal} className="figma-kicker">Skills, trades & clubs</motion.p><motion.h2 variants={reveal}>More than one way<br/>to <em>shine.</em></motion.h2></motion.div><div className="pursuit-grid">{pursuits.map((group, i)=><motion.article key={group[0]} initial={reduce?false:{opacity:0,y:48}} whileInView={{opacity:1,y:0}} viewport={{once:false,amount:.35}} transition={{delay:i*.1}}><span>0{i+1}</span><h3>{group[0]}</h3><ul>{group.slice(1).map(item=><li key={item}>{item}<b>↗</b></li>)}</ul></motion.article>)}</div></section>
-    <section className="activities-section"><div className="activities-heading"><p className="figma-kicker">Shared moments</p><h2>Activities that become <em>memories.</em></h2></div><div className="activity-list">{activities.map((item,i)=><motion.article key={item[0]} initial={reduce?false:{opacity:0,y:55}} whileInView={{opacity:1,y:0}} viewport={{once:false,amount:.25}} transition={{duration:.7}}><div className="activity-photo"><Image src={item[2]} alt={`Malex ${item[0]}`} fill sizes="(max-width: 800px) 100vw, 42vw"/></div><span>0{i+1}</span><div><h3>{item[0]}</h3><p>{item[1]}</p></div></motion.article>)}</div></section><SystemFooter/></main>;
+    <section className="curriculum-section"><motion.div className="curriculum-heading" initial="hidden" whileInView="visible" viewport={{ once:false, amount:.3 }} transition={{ staggerChildren:.12 }}><motion.p variants={reveal} className="figma-kicker">Secondary curriculum</motion.p><motion.h2 variants={reveal}>Subjects that build<br/><em>strong foundations.</em></motion.h2><motion.p variants={reveal}>Our secondary curriculum balances essential academic knowledge with practical learning and opportunities to discover individual strengths.</motion.p></motion.div><div className="curriculum-grid">{secondaryCurriculum.map((level, levelIndex)=><motion.article key={level.stage} initial={reduce?false:{opacity:0,y:48}} whileInView={{opacity:1,y:0}} viewport={{once:false,amount:.18}} transition={{duration:.7,delay:levelIndex*.1}}><div className="curriculum-card-heading"><span>0{levelIndex+1}</span><div><h3>{level.stage}</h3><p>{level.note}</p></div></div><ol>{level.subjects.map((subject, subjectIndex)=><li key={subject}><span>{String(subjectIndex+1).padStart(2,"0")}</span>{subject}</li>)}</ol><div className="trade-subjects"><p className="figma-kicker">Trade {level.trades.length === 1 ? "subject" : "subjects"}</p>{level.trades.map(trade=><strong key={trade}>{trade}</strong>)}</div></motion.article>)}</div></section>
+    <ActivitySection reduceMotion={Boolean(reduce)}/><SystemFooter/></main>;
+}
+
+function ActivitySection({ reduceMotion }: { reduceMotion: boolean }) {
+  const [preview, setPreview] = useState<{ activity: number; image: number } | null>(null);
+  const selectedActivity = preview ? activities[preview.activity] : null;
+
+  function movePreview(direction: number) {
+    setPreview(current => {
+      if (!current) return current;
+      const imageCount = activities[current.activity].images.length;
+      return { ...current, image: (current.image + direction + imageCount) % imageCount };
+    });
+  }
+
+  useEffect(() => {
+    if (!preview) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    function handleKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setPreview(null);
+      if (event.key === "ArrowLeft") movePreview(-1);
+      if (event.key === "ArrowRight") movePreview(1);
+    }
+    window.addEventListener("keydown", handleKey);
+    return () => { document.body.style.overflow = previousOverflow; window.removeEventListener("keydown", handleKey); };
+  }, [preview]);
+
+  return <section className="activities-section"><div className="activities-heading"><p className="figma-kicker">Shared moments</p><h2>Activities that become <em>memories.</em></h2></div><div className="activity-list">{activities.map((item, activityIndex)=><motion.article key={item.title} initial={reduceMotion?false:{opacity:0,y:55}} whileInView={{opacity:1,y:0}} viewport={{once:false,amount:.2}} transition={{duration:.7}}><div className="activity-photo-grid">{item.images.slice(0,3).map((src,imageIndex)=><button type="button" onClick={()=>setPreview({activity:activityIndex,image:imageIndex})} aria-label={`Preview ${item.title} photo ${imageIndex+1}`} key={src}><Image src={src} alt={`${item.title} at Malex International School`} fill sizes="(max-width: 800px) 100vw, 42vw"/>{imageIndex===0&&<span>View gallery · {item.images.length}</span>}</button>)}</div><span>0{activityIndex+1}</span><div><h3>{item.title}</h3><p>{item.description}</p><button className="activity-view-button" type="button" onClick={()=>setPreview({activity:activityIndex,image:0})}>View all photos <span>↗</span></button></div></motion.article>)}</div>
+    <AnimatePresence>{preview&&selectedActivity&&<motion.div className="activity-lightbox" role="dialog" aria-modal="true" aria-label={`${selectedActivity.title} photo gallery`} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onMouseDown={event=>{if(event.target===event.currentTarget)setPreview(null)}}><motion.div className="activity-lightbox-inner" initial={reduceMotion?false:{opacity:0,scale:.96,y:18}} animate={{opacity:1,scale:1,y:0}} exit={reduceMotion?undefined:{opacity:0,scale:.97}} transition={{duration:.3,ease:[.16,1,.3,1]}}><div className="lightbox-top"><div><p className="figma-kicker">{selectedActivity.title}</p><span>{preview.image+1} / {selectedActivity.images.length}</span></div><button type="button" onClick={()=>setPreview(null)} aria-label="Close image preview">×</button></div><div className="lightbox-image"><AnimatePresence mode="wait"><motion.div key={selectedActivity.images[preview.image]} initial={reduceMotion?false:{opacity:0,x:18}} animate={{opacity:1,x:0}} exit={reduceMotion?undefined:{opacity:0,x:-18}} transition={{duration:.22}}><Image src={selectedActivity.images[preview.image]} alt={`${selectedActivity.title} photo ${preview.image+1}`} fill priority sizes="95vw"/></motion.div></AnimatePresence></div><div className="lightbox-controls"><button type="button" onClick={()=>movePreview(-1)} aria-label="Previous photo">← Previous</button><p>Use arrow keys to browse</p><button type="button" onClick={()=>movePreview(1)} aria-label="Next photo">Next →</button></div></motion.div></motion.div>}</AnimatePresence>
+  </section>;
 }
 
 function ContactForm({ enrollment = false }: { enrollment?: boolean }) {
