@@ -1,3 +1,5 @@
-import { ContentPage } from "@/components/content-page";
-export const metadata={title:"News & Events"};
-export default function Page(){return <ContentPage eyebrow="News & events" title="What is happening at Malex." intro="Stories from our classrooms, celebrations from our community, and the dates families need to know." image="/images/primary.jpg" imageAlt="Happy school children together" statement="A lively school keeps making stories worth sharing." sections={[{number:"17 JUL",title:"Admissions information morning",body:"Meet our team, explore the programmes, and get practical guidance on applying for the new session.",link:"Contact admissions",href:"/contact"},{number:"02 JUL",title:"Young creators exhibition",body:"Primary and Secondary learners share a term of visual art, design, and practical projects."},{number:"21 JUN",title:"Community sports day",body:"A day of teamwork, family spirit, and joyful competition across the school."}]} bandImage="/images/community.jpg"/>}
+import { NewsExperience } from "@/components/news-experience";
+
+export const metadata = { title: "News & School Updates", description: "Read the latest announcements, events, achievements, and school updates from Malex International School.", alternates: { canonical: "/news" } };
+
+export default function Page() { return <NewsExperience/>; }

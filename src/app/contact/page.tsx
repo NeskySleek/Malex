@@ -1,3 +1,3 @@
-import Link from "next/link";import { SiteFooter,SiteHeader } from "@/components/site-shell";
-export const metadata={title:"Contact"};
-export default function Page(){return <><SiteHeader/><main><section className="contact-page"><p className="kicker">Contact Malex</p><h1>Come and see<br/>learning <em>in motion.</em></h1><div className="contact-grid"><div><h2>Visit us</h2><p>Malex International School<br/>Enugu, Nigeria</p><p>Monday–Friday<br/>8:00am–4:00pm</p></div><div><h2>Talk to us</h2><p>+234 800 MALEX SCHOOL<br/>hello@malexschool.edu.ng</p><Link href="/admissions">Admissions information ↗</Link></div><form><label>Name<input name="name" placeholder="Your name"/></label><label>Email<input type="email" name="email" placeholder="you@example.com"/></label><label>How can we help?<textarea name="message" rows={4}/></label><button type="button">Send enquiry ↗</button></form></div></section></main><SiteFooter/></>}
+import { ContactExperience } from "@/components/institutional-pages";
+export const metadata={title:"Contact Malex",description:"Contact or visit Malex International School at 2A Niger Close, Uwani, Enugu. Find phone numbers, email, and directions.",alternates:{canonical:"/contact"}};
+export default function Page(){return <ContactExperience/>}
