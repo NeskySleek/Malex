@@ -14,13 +14,14 @@ const values = [
 
 const team = [
   { name: "Mrs Nkechi Ogbo", role: "Proprietress", image: "/images/about/leadership/nkechi-ogbo.jpeg", position: "center 24%" },
-  { name: "Mr. Ifeanyi Okeanonife", role: "Principal", image: "/images/about/leadership/ifeanyi-okeanonife.png", position: "center" },
+  { name: "Chief Ifeanyi Okeanonife", role: "Principal", image: "/images/about/leadership/ifeanyi-okeanonife.png", position: "center" },
   { name: "Mrs Agbo Obiageli", role: "Headmistress", image: "/images/about/leadership/agbo-obiageli.png", position: "center" },
-  { name: "Mrs Favour Ugo", role: "Admin", image: "/images/about/leadership/favour-ugo.png", position: "center 30%" },
+  { name: "Chinecherem Favour Uche", role: "Admin", image: "/images/about/leadership/favour-ugo.png", position: "center 30%" },
   { name: "Mrs Okeke Faith", role: "Junior Secondary Coordinator", image: "/images/about/leadership/okeke-faith.png", position: "center 25%" },
   { name: "Mrs Okafor Ebere", role: "KG Classes Coordinator", image: "/images/about/leadership/okafor-ebere.png", position: "center 24%" },
   { name: "Mrs Madubuike Lebechi", role: "Grade Classes Coordinator", image: "/images/about/leadership/madubuike-lebechi.png", position: "center 34%" },
   { name: "Mrs MBA Onyinyechi", role: "Assistant Bursar", image: "/images/about/leadership/mba-onyinyechi.png", position: "center 34%" },
+  { name: "Mr Eze Stephen", role: "Senior Secondary Coordinator", image: "/images/about/leadership/eze-stephen.png", position: "center 28%" },
 ];
 const reveal = { hidden: { opacity: 0, y: 42 }, visible: { opacity: 1, y: 0 } };
 
